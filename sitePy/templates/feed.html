@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>mural dos usuarios</title>
+    <a href=" {{ url_for('logout') }}"> <p>sair?</p> </a>
+</head>
+<body>
+
+    <h1>IMAGENS DE TODOS USUÁRIOS: </h1>
+
+    {% for foto in fotos %}
+          <img src ="{{ url_for('static', filename='posters/{}'.format(foto.img)) }}"
+          width="360"
+          height="360"
+          />
+    {% endfor %}
+
+</body>
+</html>

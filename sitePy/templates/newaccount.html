@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NEW ACCOUNT</title>
+
+    <h1>CRIE SUA CONTA</h1>
+    <h2>INSIRA SEUS DADOS: </h2>
+
+    <form method="POST">
+    {{ form.csrf_token }}
+
+        {{ form.username.label() }}
+        {{ form.username() }}
+
+        {{ form.passw.label() }}
+        {{ form.passw() }}
+
+        {{ form.confirmation_passw.label() }}
+        {{ form.confirmation_passw() }}
+
+        {{ form.confirmButton() }}
+
+    </form>
+</head>
+<body>
+
+</body>
+</html>

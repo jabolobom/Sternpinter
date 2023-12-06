@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>conta do {{ nome.username }}</title>
+
+    <h1> boa noite {{ nome.username }} !</h1>
+
+    {% if form %}
+    <form method = "POST" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        {{ form.imagem() }}
+        {{ form.confirmButton() }}
+    </form>
+    {% endif %}
+
+    {% for foto in nome.fotos %}
+        <img src ="{{ url_for('static', filename='posters/{}'.format(foto.img)) }}"
+             width="360"
+          height="360"
+        />
+    {% endfor %}
+
+    <a href=" {{ url_for('logout') }}"> <p>logout</p> </a>
+    <a href=" {{ url_for('feed') }}"> <p>mural dos usuarios</p> </a>
+
+</head>
+<body>
+
+</body>
+</html>

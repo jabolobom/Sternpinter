@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LOGIN</title>
+    <h1>LOGIN</h1>
+    <h2> loga aí </h2>
+
+    <form method="POST">
+    {{ form.csrf_token }}
+
+        {{ form.username.label() }}
+        {{ form.username() }}
+
+        {{ form.passw.label() }}
+        {{ form.passw() }}
+
+        {{ form.confirmButton() }}
+
+    </form>
+
+    <a href="{{ url_for('home') }}">voltar</a>
+
+</head>
+<body>
+
+</body>
+</html>
