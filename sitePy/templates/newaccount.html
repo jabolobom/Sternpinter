@@ -9,18 +9,18 @@
 
     <form method="POST">
     {{ form.csrf_token }}
-
+<!-- ??? -->
         {{ form.username.label() }}
         {{ form.username() }}
 
         {{ form.passw.label() }}
         {{ form.passw() }}
-
+<!-- formulario, usa os atributos do objeto como elementos? (WTF?) -->
         {{ form.confirmation_passw.label() }}
         {{ form.confirmation_passw() }}
 
         {{ form.confirmButton() }}
-
+<!--  funciona -->
     </form>
 </head>
 <body>
