@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <title>conta do {{ nome.username }}</title>
 
+</head>
+
+<body>
     <h1> boa noite {{ nome.username }} !</h1>
 
     {% if form %}
     <form method = "POST" enctype="multipart/form-data">
         {{ form.csrf_token }}
-        {{ form.imagem() }}
-        {{ form.confirmButton() }}
+        {{ form.imagem }}
+        {{ form.confirmButton }}
     </form>
     {% endif %}
 
@@ -22,12 +25,10 @@
     {% endfor %}
 
     <a href=" {{ url_for('logout') }}"> <p>logout</p> </a>
-    <!-- botao de logout, {{}} indica uma variavel ou uma comunicação com o python no backend -->
+    {# botao de logout, {{}} indica uma variavel ou uma comunicação com o python no backend #}
     <a href=" {{ url_for('feed') }}"> <p>mural dos usuarios</p> </a>
-
-
-</head>
-<body>
-
+    <script src="{{ url_for('static', filename='js/scroll_color.js') }}"></script>
 </body>
+
+
 </html>
