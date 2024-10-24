@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>NEW ACCOUNT</title>
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/newaccount.css') }}">
+</head>
+<body>
     <h1>CRIE SUA CONTA</h1>
     <h2>INSIRA SEUS DADOS: </h2>
 
+    <div class="box">
     <form method="POST">
     {{ form.csrf_token }}
 
@@ -20,10 +23,9 @@
         {{ form.confirmation_passw() }}
 
         {{ form.confirmButton() }}
-
+        </div>
     </form>
-</head>
-<body>
-
 </body>
+
+
 </html>

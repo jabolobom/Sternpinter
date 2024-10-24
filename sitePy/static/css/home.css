@@ -1,0 +1,48 @@
+        h1 {
+            text-align: center;
+            color: red;
+        }
+
+         h2{
+             text-align: center;
+             color: red;
+         }
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .title {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 10px 0;
+        }
+        .box {
+            width: 95%;
+            height: 75%;
+            background-color: darkgray;
+            border: 2px solid black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box button{
+            width: 25%;
+        }
+
+        .box h2{
+            color: black;
+        }
+
+
+
+

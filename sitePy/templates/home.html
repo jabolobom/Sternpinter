@@ -3,17 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>funcionando</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 
-    <h1>MUITAS FOTOS.</h1>
-    <h2>boa noite</h2>
-
-    <a href="{{ url_for('pagetwo') }}">login</a>
-    <br>
-    <a href="{{ url_for('newaccount') }}">criar conta</a>
     <br>
 
 </head>
 <body>
+
+    <h1 class="title">MUITAS FOTOS.</h1>
+
+<div class="box">
+    <h2>boa noite</h2>
+    <button onclick="window.location.href='{{ url_for('pagetwo') }}'">Login</button>
+    <br>
+    <button onclick="window.location.href='{{ url_for('newaccount') }}'">Criar Conta</button>
+</div>
 
 </body>
 </html>

@@ -5,16 +5,16 @@ from sitePy.models import Usuarios
 
 #formularios são controlados por classes
 class form_login(FlaskForm):
-    username = StringField("username", validators=[DataRequired()]) # hard coding os formularios no back-end
-    passw = PasswordField("password", validators=[DataRequired()])
-    confirmButton = SubmitField("login") # submit field também é colocado no back-end
+    username = StringField("Usuário", validators=[DataRequired()]) # hard coding os formularios no back-end
+    passw = PasswordField("Senha", validators=[DataRequired()])
+    confirmButton = SubmitField("Login") # submit field também é colocado no back-end
 
 class form_newaccount(FlaskForm):
-    username = StringField("username", validators=[DataRequired()])
-    passw = PasswordField("password", validators=[DataRequired()])
-    confirmation_passw = PasswordField("password confirmation", validators=[DataRequired(), EqualTo("passw")])
+    username = StringField("Usuário", validators=[DataRequired()])
+    passw = PasswordField("Senha", validators=[DataRequired()])
+    confirmation_passw = PasswordField("Confirmação de senha", validators=[DataRequired(), EqualTo("passw")])
     # checa se é igual a senha
-    confirmButton = SubmitField("register")
+    confirmButton = SubmitField("Criar conta", render_kw={"class": "confirm-btn"})
 
     # função simples pra checar se o usuário já existe, query de sql
     def validate_username(self, username):
@@ -25,4 +25,4 @@ class form_newaccount(FlaskForm):
 
 class Uploader(FlaskForm):
     imagem = FileField(label="nova imagem", validators=[DataRequired()])
-    confirmButton = SubmitField("upload")
+    confirmButton = SubmitField("Upload")
