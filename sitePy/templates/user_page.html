@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>conta do {{ nome.username }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user_page.css') }}">
+
+</head>
+
+<body>
+    <h1> boa noite {{ nome.username }} !</h1>
+<div class="uploader-wrap">
+<div class="upload-box">
+    {% if form %}
+    <form method = "POST" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+            {{ form.imagem(class="hidden-file-input", id="fileUpload", onchange="this.form.submit()") }}
+            <label for="fileUpload" class="clickable-label">Novo post
+                (jpg,jpeg,png,gif)
+            </label>
+    </form>
+    {% endif %}
+</div>
+</div>
+        {# EVERYTHING IS A DIV RAAAAH #}
+
+
+<div class="image-gallery">
+    {% for foto in nome.fotos %}
+        <img src ="{{ url_for('static', filename='posters/{}'.format(foto.img)) }}"
+             width="360"
+          height="360"
+        />
+    {% endfor %}
+</div>
+
+<div class="link-container">
+    <a id="logout" href=" {{ url_for('logout') }}"> <p>logout</p> </a>
+    {# botao de logout, {{}} indica uma variavel ou uma comunicação com o python no backend #}
+    <a id="feed_portal" href=" {{ url_for('feed') }}"> <p>mural dos usuarios</p> </a>
+</div>
+</body>
+</html>

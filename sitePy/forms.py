@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, FileField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from sitePy.models import Usuarios
@@ -24,5 +25,5 @@ class form_newaccount(FlaskForm):
 
 
 class Uploader(FlaskForm):
-    imagem = FileField(label="nova imagem", validators=[DataRequired()])
+    imagem = FileField(label="nova imagem", validators=[DataRequired(), FileAllowed(['jpg', 'jpeg', 'png', 'gif'], "Apenas arquivos de imagem: jpg,jpeg,png e gif's permitidos.")])
     confirmButton = SubmitField("Upload")

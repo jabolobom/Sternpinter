@@ -11,7 +11,7 @@
 
     <div class="box">
     <form method="POST">
-    {{ form.csrf_token }}
+        {{ form.csrf_token }}
 
         {{ form.username.label() }}
         {{ form.username() }}
@@ -23,8 +23,9 @@
         {{ form.confirmation_passw() }}
 
         {{ form.confirmButton() }}
-        </div>
     </form>
+    </div>
+
 </body>
 
 

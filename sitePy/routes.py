@@ -13,20 +13,20 @@ def home():
     # render template essencialmente carrega um html
     # redirect funciona igual, auto-explicativo
 
-@app.route("/pagetwo", methods=["GET", "POST"])
-def pagetwo():
+@app.route("/login_page", methods=["GET", "POST"])
+def login_page():
     login = form_login() # funcao declarada no forms, formulario
     if login.validate_on_submit(): # flask wtf form metodo
         usuario = Usuarios.query.filter_by(username=login.username.data).first() # pesquisa o usuario na database
         # checa se o usuario existe no banco + criptografa e checa contra as outras senhas criptografadas
         if usuario and bcrypt.check_password_hash(usuario.passw, login.passw.data): # caso tudo certo
             login_user(usuario) # log in
-            return redirect(url_for("after", userid=usuario.id))
-            # after é a página pós login
+            return redirect(url_for("user_page", userid=usuario.id))
+            # user_page é a página pós login
 
 
-    return render_template("pagetwo.html", form=login)
-    # caso falso ele retorna a pagetwo novamente
+    return render_template("login_page.html", form=login)
+    # caso falso ele retorna a login_page novamente
 
 @app.route("/newaccount", methods=["GET", "POST"])
 def newaccount():
@@ -45,14 +45,14 @@ def newaccount():
         # a database fosse invadida, as senhas nao seriam necessarias...
         # aparentemente "usuario" é o endereço do objeto em si, o que não fica salvo na db
 
-        return redirect(url_for("after", userid=usuario.id))
+        return redirect(url_for("user_page", userid=usuario.id))
     else: print(new.errors)
 
     return render_template("newaccount.html", form=new)
 
-@app.route("/after/<userid>", methods=["GET", "POST"])
+@app.route("/user_page/<userid>", methods=["GET", "POST"])
 @login_required
-def after(userid): # pagina do usuario
+def user_page(userid): # pagina do usuario
     if int(userid) == int(current_user.id):
         manda = Uploader()
         if manda.validate_on_submit():
@@ -66,11 +66,12 @@ def after(userid): # pagina do usuario
 
             database.session.add(imagem)
             database.session.commit()
+            return redirect(url_for("user_page", userid=userid)) # redireciona novamente a pagina do user
 
-        return render_template("after.html", nome=current_user, form=manda)
+        return render_template("user_page.html", nome=current_user, form=manda)
     else:
         nome = Usuarios.query.get(int(userid))
-    return render_template("after.html", nome=nome, form=None)
+    return render_template("user_page.html", nome=nome, form=None)
 
 @app.route("/logout")
 @login_required
