@@ -1,5 +1,5 @@
 from sitePy import database, login_manager
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from flask_login import UserMixin
 
 @login_manager.user_loader
@@ -17,7 +17,9 @@ class Usuarios(database.Model, UserMixin):
 class Foto(database.Model):
     id = database.Column(database.Integer, primary_key = True) # uso interno
     img = database.Column(database.String(255), default="default.png")
-    crDate = database.Column(database.DateTime, nullable=False, default=datetime.utcnow())
+    crDate = database.Column(database.DateTime, nullable=False, default=datetime.now(timezone(timedelta(hours=-3))))
+    likeCounter = database.Column(database.Integer, default=0)
+    dislikeCounter = database.Column(database.Integer, default=0)
     ownerID = database.Column(database.Integer, database.ForeignKey('usuarios.id'), nullable=False)
     # owner id recebe uma foreign key, é mais uma solução de base de dados do que uma solução orientada a objetos
     # (apesar de ser um atributo), essa foreign key é um valor de uma outra base de dados. Essencialmente é o que
