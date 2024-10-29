@@ -2,20 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>mural dos usuarios</title>
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/feed.css') }}">
+    <title>Feed</title>
 </head>
 <body>
 
-    <h1>IMAGENS DE TODOS USUÁRIOS: </h1>
-
-    {% for foto in fotos %}
-          <img src ="{{ url_for('static', filename='posters/{}'.format(foto.img)) }}"
-          width="360"
-          height="360"
-          />
-    {% endfor %}
+    <h1>IMAGENS: </h1>
+    <div class = "imageContainer-div" id="imageContainer-box">
+        <img id="imageOutput">
+    </div>
 
     <a href=" {{ url_for('logout') }}"> <p>sair?</p> </a>
+    <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+    <script src="{{ url_for('static', filename='js/slider.js') }}"></script>
 </body>
 </html>

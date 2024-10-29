@@ -1,5 +1,5 @@
 from sitePy import app, database, bcrypt # ver como bcrypt funciona
-from flask import render_template, url_for, redirect
+from flask import render_template, url_for, redirect, jsonify
 from sitePy.forms import form_login, form_newaccount, Uploader
 from sitePy.models import Usuarios, Foto
 from flask_login import login_required, login_user, logout_user, current_user
@@ -82,7 +82,20 @@ def logout():
 @app.route("/feed")
 @login_required
 def feed():
+    # fotos = Foto.query.order_by(Foto.crDate.desc()).all()
+    return render_template("feed.html")
+
+@app.route("/requests/foto", methods=['GET'])
+def get_fotos():
     fotos = Foto.query.order_by(Foto.crDate.desc()).all()
-    return render_template("feed.html", fotos=fotos)
+    foto_list = [{"id": img.id,
+                  "img": url_for('static', filename=f'posters/{img.img}'),
+                  "owner": img.ownerID}
+                 for img in fotos]
+    return jsonify(foto_list)
 
-
+@app.route("/feed-all")
+@login_required
+def feed_all():
+    fotos = Foto.query.order_by(Foto.crDate.desc()).all()
+    return render_template("feed_all.html", fotos=fotos)
