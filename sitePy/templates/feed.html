@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/feed.css') }}">
     <title>Feed</title>
 </head>
@@ -11,7 +12,7 @@
     <div class = "imageContainer-div" id="imageContainer-box">
         <img id="imageOutput">
     </div>
-
+    <button onclick="add_one()"></button>
     <a href=" {{ url_for('logout') }}"> <p>sair?</p> </a>
     <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
     <script src="{{ url_for('static', filename='js/slider.js') }}"></script>

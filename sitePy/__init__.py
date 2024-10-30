@@ -2,6 +2,7 @@ from flask import Flask # framework pra criação de app web
 from flask_sqlalchemy import SQLAlchemy # manipulação de SQL direto do python
 from flask_login import LoginManager # handler de login do flask
 from flask_bcrypt import Bcrypt # encriptador do flask, usa bcrypt, que é irreversível, mas reproduzível.
+from flask_wtf import CSRFProtect
 
 app = Flask(__name__)# variavel de controle do app
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:123@172.17.0.2:3306/userbase" # precisa ser o host do site
@@ -14,6 +15,9 @@ database = SQLAlchemy(app) # conexao sql com o app
 bcrypt = Bcrypt(app) # variavel pra uso do bcrypt
 login_manager = LoginManager(app) # conexao
 login_manager.login_view = "home" # define a pagina do login
+
+csrf = CSRFProtect() # gerador de csrf
+csrf.init_app(app)
 
 from sitePy import routes # importa as rotas (links) para cada pagina do site, definido para uso do login_manager na linha de cima
 # (porque foi definido aqui em baixo eu nao lembro exatamente)

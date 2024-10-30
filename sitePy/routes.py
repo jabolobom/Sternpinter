@@ -1,5 +1,5 @@
 from sitePy import app, database, bcrypt # ver como bcrypt funciona
-from flask import render_template, url_for, redirect, jsonify
+from flask import render_template, url_for, redirect, jsonify, request, abort
 from sitePy.forms import form_login, form_newaccount, Uploader
 from sitePy.models import Usuarios, Foto
 from flask_login import login_required, login_user, logout_user, current_user
@@ -90,7 +90,7 @@ def get_fotos():
     fotos = Foto.query.order_by(Foto.crDate.desc()).all()
     foto_list = [{"id": img.id,
                   "img": url_for('static', filename=f'posters/{img.img}'),
-                  "owner": img.ownerID}
+                  "owner": img.ownerID,}
                  for img in fotos]
     return jsonify(foto_list)
 
@@ -99,3 +99,27 @@ def get_fotos():
 def feed_all():
     fotos = Foto.query.order_by(Foto.crDate.desc()).all()
     return render_template("feed_all.html", fotos=fotos)
+
+@app.route("/requests/update_counter", methods=['POST'])
+def update_counter():
+    if request.headers.get("X-Requested-With") != "XMLHttpRequest": # impedir que a rota seja acessada pelo link
+        abort(403)
+
+    data = request.get_json() # recebe o JSON do request e salva em uma var
+    foto_id = data.get("id") # recebe o id do javascript e coloca em uma variavel para manipulação
+    action = data.get("action") # recebe o parametro inserido no JS para definir qual ação tomar
+    # essencialmente essas duas variáveis "extraem" os valores que estão na var data
+
+    foto = Foto.query.get(foto_id) # variavel pointer para o objeto com esse id
+    if not foto: # caso erro
+        return jsonify({"error": "foto não encontrada"}), 404
+
+    if action == "like":
+        foto.likeCounter += 1
+    elif action == "dislike":
+        foto.dislikeCounter += 1
+    # define qual usar, poderia ser um MATCH case, mas não é necessário
+
+    database.session.commit() # salva as diferenças na DB
+    return jsonify({"success": True, "likeCount": foto.likeCounter, "dislikeCount": foto.dislikeCounter}), 200
+    # resposta ao script para que ele não quebre no meio e entre em combustão.
