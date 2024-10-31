@@ -1,3 +1,6 @@
+import Hammer from 'hammerjs';
+
+
 let fotos = [];
 let indexAtual = 0;
 const CSRFTOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
@@ -25,103 +28,87 @@ function proxImagem(){
     }
 }
 
-function showall_message(){
-    imageContainer.innerHTML = "";
-
-    const button = document.createElement("button");
-    button.textContent = "Go to next page";
-    button.onclick = function(){
-        window.location.href = "/feed-all";
-    }
-
-    imageContainer.appendChild(button);
-    console.log("botão criado") // DEBUG
-}
-
 class Swiper {
     constructor(element) {
-        this.container = element
-
-        this.handle()
+        this.container = element;
+        this.handle();
     }
 
-    handle(){
-        this.images = this.container.querySelectorAll("#imageOutput")
+    handle() {
+        this.images = this.container.querySelectorAll("#imageOutput");
 
-        this.topImagem = this.images[this.images.length-1]
+        this.topImagem = this.images[this.images.length - 1];
 
-        if(this.images.length > 0){
-
-            this.hammer = new Hammer(this.topImagem)
+        if (this.images.length > 0) {
+            this.hammer = new Hammer(this.topImagem);
             this.hammer.add(new Hammer.Pan({
-                position: Hammer.position_ALL, threshold: 0
-            }))
+                direction: Hammer.DIRECTION_ALL,
+                threshold: 0
+            }));
+            this.hammer.add(new Hammer.Mouse());
 
-            this.hammer.on("pan", this.onPan.bind(this))
+            this.hammer.on("pan", this.onPan.bind(this));
         }
     }
 
-onPan(e) {
+    onPan(e) {
+        if (!this.isPanning) {
+            this.isPanning = true;
 
-  if (!this.isPanning) {
+            // remove CSS transition to avoid errors
+            this.topImagem.style.transition = null;
 
-    this.isPanning = true
+            // initial image coordinates
+            let style = window.getComputedStyle(this.topImagem);
+            let mx = style.transform.match(/^matrix\((.+)\)$/);
+            this.startPosX = mx ? parseFloat(mx[1].split(', ')[4]) : 0;
+            this.startPosY = mx ? parseFloat(mx[1].split(', ')[5]) : 0;
 
-    // remove transição css, evita erros
-    this.topImagem.style.transition = null
+            let limites = this.topImagem.getBoundingClientRect();
+            this.isDraggingFrom = (e.center.y - limites.top) > this.topImagem.clientHeight / 2 ? -1 : 1;
+        }
 
-    // coordenadas iniciais da imagem
-    let style = window.getComputedStyle(this.topImagem)
-      // recebe os atributos como altura, largura
-    let mx = style.transform.match(/^matrix\((.+)\)$/)
-      // magia matematica maligna
-    this.startPosX = mx ? parseFloat(mx[1].split(', ')[4]) : 0
-    this.startPosY = mx ? parseFloat(mx[1].split(', ')[5]) : 0
-    // mais magia negra
+        let posX = e.deltaX + this.startPosX;
+        let posY = e.deltaY + this.startPosY;
 
-    let limites = this.topImagem.getBoundingClientRect()
-      // tamanho e o posição da imagem em relação ao Viewport
+        let propX = e.deltaX / this.container.clientWidth;
+        let propY = e.deltaY / this.container.clientHeight;
 
-      // posição do ponteiro, topo 1 ou fundo -1 da imagem
-    this.isDraggingFrom =
-        (e.center.y - limites.top) > this.topImagem.clientHeight / 2 ? -1 : 1
-  }
+        let dirX = e.deltaX < 0 ? -1 : 1;
 
-  // novas coordenadas
-  let posX = e.deltaX + this.startPosX
-  let posY = e.deltaY + this.startPosY
+        let deg = this.isDraggingFrom * dirX * Math.abs(propX) * 45;
 
-  // relação entre pixels arrastados e o eixo X (matematica hell yeah)
-  let propX = e.deltaX / this.container.clientWidth
+        this.topImagem.style.transform =
+            'translateX(' + posX + 'px) translateY(' + posY + 'px) rotate(' + deg + 'deg)';
 
-  // direção arrastada esquerda -1 direita 1
-  let dirX = e.deltaX < 0 ? -1 : 1 // JAVASCRIPT SYNTAX GOES BRRRRRRRRRRR
+        console.log('e.deltaX:', e.deltaX, 'e.deltaY:', e.deltaY);
+        console.log('posX:', posX, 'posY:', posY, 'deg:', deg);
 
-  // rotação em graus
-  let deg = this.isDraggingFrom * dirX * Math.abs(propX) * 45
+        if (e.isFinal) {
+            this.isPanning = false;
 
-  // movimentando e rotando imagem
-  this.topImagem.style.transform =
-    'translateX(' + posX + 'px) translateY(' + posY + 'px) rotate(' + deg + 'deg)'
+            this.topImagem.style.transform = 'translateX(-50%) translateY(-50%) rotate(0deg)';
 
-    console.log('e.deltaX:', e.deltaX, 'e.deltaY:', e.deltaY);
-    console.log('posX:', posX, 'posY:', posY, 'deg:', deg);
-
-  if (e.isFinal) {
-
-    this.isPanning = false
-
-    // transição volta ao normal
-    this.topImagem.style.transition = 'transform 200ms ease-out'
-
-    // reseta posição da dita cuja
-    this.topImagem.style.transform = 'translateX(-50%) translateY(-50%)'
-
-  }
-
+            if (propX > 0.25 && e.direction === Hammer.DIRECTION_RIGHT) {
+                posX = this.container.clientWidth;
+                this.topImagem.style.transform =
+                    'translateX(' + posX + 'px) translateY(' + posY + 'px) rotate(' + deg + 'deg)';
+            } else if (propX < -0.25 && e.direction === Hammer.DIRECTION_LEFT) {
+                posX = -(this.container.clientWidth + this.topImagem.clientWidth);
+                this.topImagem.style.transform =
+                    'translateX(' + posX + 'px) translateY(' + posY + 'px) rotate(' + deg + 'deg)';
+            } else if (propY < -0.25 && e.direction === Hammer.DIRECTION_UP) {
+                posY = -(this.container.clientHeight + this.topImagem.clientHeight);
+                this.topImagem.style.transform =
+                    'translateX(' + posX + 'px) translateY(' + posY + 'px) rotate(' + deg + 'deg)';
+            } else {
+                this.topImagem.style.transform =
+                    'translateX(-50%) translateY(-50%) rotate(0deg)';
+            }
+        }
+    }
 }
 
-}
 
 let swipeobj = new Swiper(imageContainer)
 
