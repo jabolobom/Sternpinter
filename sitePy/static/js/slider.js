@@ -1,16 +1,15 @@
-import Hammer from 'hammerjs';
-
-
 let fotos = [];
 let indexAtual = 0;
 const CSRFTOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-const imageOutput = document.getElementById("imageOutput")
+const imageOutput = document.getElementById("second-imageOutput")
+const firstOutput = document.getElementById("first-imageOutput")
 const imageContainer = document.getElementById("imageContainer-box");
 
 async function recebeFoto(){
     try{
         const respostaServer = await fetch("/requests/foto");
-        fotos = await respostaServer.json();''
+        fotos = await respostaServer.json();
+        console.log(fotos)
         proxImagem();
     }
     catch (error){
@@ -20,8 +19,14 @@ async function recebeFoto(){
 // ATTENTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
 function proxImagem(){
     if (indexAtual < fotos.length) {
-        imageOutput.src = fotos[indexAtual].img;
-        console.log(`Current image: ${imageOutput.src}`); // DEBUG
+        if (indexAtual === 0){
+            imageOutput.src = fotos[indexAtual].img;
+            console.log(`current index:", ${indexAtual}, "current image:", ${imageOutput.src}, "IMAGE ID: " ${fotos[indexAtual].id}`);
+
+            indexAtual += 1;
+            firstOutput.src = fotos[indexAtual].img
+            console.log(`current index:", ${indexAtual}, "current image:", ${firstOutput.src}, "IMAGE ID: " ${fotos[indexAtual].id}`)
+        }
     }
     else{
         showall_message()
@@ -35,23 +40,29 @@ class Swiper {
     }
 
     handle() {
-        this.images = this.container.querySelectorAll("#imageOutput");
+        this.images = this.container.querySelectorAll(".imageOutput");
 
         this.topImagem = this.images[this.images.length - 1];
+        this.topImagem.addEventListener('dragstart', (e) => e.preventDefault());
 
         if (this.images.length > 0) {
-            this.hammer = new Hammer(this.topImagem);
-            this.hammer.add(new Hammer.Pan({
-                direction: Hammer.DIRECTION_ALL,
-                threshold: 0
-            }));
-            this.hammer.add(new Hammer.Mouse());
+            this.hammer = new Hammer(this.topImagem, {
+                inputClass: Hammer.MouseInput, // deve adicionar suporte a mouse
+                recognizer: [
+                    [Hammer.Pan, {
+                    direction: Hammer.DIRECTION_ALL,
+                    threshold: 0
+                    }]
+                ]
+            });
 
             this.hammer.on("pan", this.onPan.bind(this));
         }
     }
 
     onPan(e) {
+        let sucessful = false;
+
         if (!this.isPanning) {
             this.isPanning = true;
 
@@ -81,30 +92,70 @@ class Swiper {
         this.topImagem.style.transform =
             'translateX(' + posX + 'px) translateY(' + posY + 'px) rotate(' + deg + 'deg)';
 
-        console.log('e.deltaX:', e.deltaX, 'e.deltaY:', e.deltaY);
-        console.log('posX:', posX, 'posY:', posY, 'deg:', deg);
-
         if (e.isFinal) {
             this.isPanning = false;
 
-            this.topImagem.style.transform = 'translateX(-50%) translateY(-50%) rotate(0deg)';
+            this.topImagem.style.transition = 'transform 200ms ease-out'
 
             if (propX > 0.25 && e.direction === Hammer.DIRECTION_RIGHT) {
+
+                sucessful = true;
                 posX = this.container.clientWidth;
-                this.topImagem.style.transform =
-                    'translateX(' + posX + 'px) translateY(' + posY + 'px) rotate(' + deg + 'deg)';
+
             } else if (propX < -0.25 && e.direction === Hammer.DIRECTION_LEFT) {
+
+                sucessful = true;
                 posX = -(this.container.clientWidth + this.topImagem.clientWidth);
-                this.topImagem.style.transform =
-                    'translateX(' + posX + 'px) translateY(' + posY + 'px) rotate(' + deg + 'deg)';
+
             } else if (propY < -0.25 && e.direction === Hammer.DIRECTION_UP) {
+
+                sucessful = true;
                 posY = -(this.container.clientHeight + this.topImagem.clientHeight);
-                this.topImagem.style.transform =
+
+            }
+
+            if(sucessful){
+                this.topImagem.transform =
                     'translateX(' + posX + 'px) translateY(' + posY + 'px) rotate(' + deg + 'deg)';
-            } else {
+
+                setTimeout(() => {
+                    // remove a img topo
+                    this.container.removeChild(this.topImagem);
+                    // adiciona a próxima
+                    this.push();
+                    // chama o handler de movimentos
+                    this.handle();
+                }, 200)
+            }
+            else{
                 this.topImagem.style.transform =
                     'translateX(-50%) translateY(-50%) rotate(0deg)';
             }
+
+        }
+    }
+
+    push() {
+
+        if (indexAtual < fotos.length) {
+            indexAtual += 1; // PROXIMO INDEX DE IMAGEM
+            // CRIA NOVO ELEMENTO IMG E COLOCA O NOME DA CLASSE
+            let card = document.createElement('img');
+            card.className = "imageOutput";
+            // DÁ A SOURCE DA IMAGEM
+            try {
+                card.src = fotos[indexAtual].img
+            } catch (error){
+                alert("no more images", error)
+            }; // TRY TO DEAL WITH UNDEFINED END OF ARRAY
+
+
+            // INSERE ANTES DA QUE ESTIVER NA FRENTE
+            this.container.insertBefore(card, this.container.firstChild);
+            console.log("push, new image:", fotos[indexAtual], "index atual: ", indexAtual)
+
+        } else {
+            showall_message();
         }
     }
 }
@@ -113,7 +164,9 @@ class Swiper {
 let swipeobj = new Swiper(imageContainer)
 
 
-recebeFoto(); // chama a função quando o script é carregado
+document.addEventListener('DOMContentLoaded', () => {
+    recebeFoto(); // espera o load do resto da página antes de chamar o script
+});
 console.log(fotos); // DEBUG
 
 function update_counter(action){
@@ -141,6 +194,9 @@ function update_counter(action){
     });
 }
 
+function showall_message(){
+    console.log("showmsg called")
+}
 
 
 
