@@ -8,7 +8,7 @@ from sitePy.models import Usuarios
 class form_login(FlaskForm):
     username = StringField("Usuário", validators=[DataRequired()]) # hard coding os formularios no back-end
     passw = PasswordField("Senha", validators=[DataRequired()])
-    confirmButton = SubmitField("Login") # submit field também é colocado no back-end
+    confirmButton = SubmitField("Login", render_kw={"class": "confirm-btn"}) # submit field também é colocado no back-end
 
 class form_newaccount(FlaskForm):
     username = StringField("Usuário", validators=[DataRequired()])

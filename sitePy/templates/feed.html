@@ -19,4 +19,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <script src="{{ url_for('static', filename='js/slider.js') }}"></script>
 </body>
+
+<script>
+    const feedAll_url = "{{ url_for('feed_all')}}";
+// meio engenhoso, define o link dentro do template html, já que a referência do flask só funciona aqui, mas o escopo
+//     das variaveis definidas aqui também contempla os scripts importados, então funciona como se estivesse no mesmo
+//     "arquivo".
+</script>
 </html>

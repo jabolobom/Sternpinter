@@ -94,7 +94,7 @@ def get_fotos():
                  for img in fotos]
     return jsonify(foto_list)
 
-@app.route("/feed-all")
+@app.route("/feed_all")
 @login_required
 def feed_all():
     fotos = Foto.query.order_by(Foto.crDate.desc()).all()
