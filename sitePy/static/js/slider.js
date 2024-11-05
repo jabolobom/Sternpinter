@@ -4,6 +4,7 @@ const CSRFTOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute
 const imageOutput = document.getElementById("second-imageOutput")
 const firstOutput = document.getElementById("first-imageOutput")
 const imageContainer = document.getElementById("imageContainer-box");
+let topImageIndex = 0;
 
 async function recebeFoto(){
     try{
@@ -37,7 +38,6 @@ class Swiper {
     constructor(element) {
         this.container = element;
         this.handle();
-        this.topImageIndex = 0;
     }
 
     handle() {
@@ -154,6 +154,8 @@ class Swiper {
                 console.log("ultima imagem");
                 this.handle();
                 indexAtual += 1;
+                topImageIndex = indexAtual - 1; // seguindo a estrutura anterior sem essa mudança acabaria que update_count(y, x)
+            // seria chamado com um index além do que existe dentro da array fotos
         } else if (indexAtual >= fotos.length){ // sem mais imagens
             console.log("image array end");
             create_button(this.container); // chama a função, usando o objeto como parametro
