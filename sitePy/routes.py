@@ -1,31 +1,29 @@
 from sitePy import app, database, bcrypt # ver como bcrypt funciona
-from flask import render_template, url_for, redirect, jsonify, request, abort
+from flask import render_template, url_for, redirect, jsonify, request, abort, flash
 from sitePy.forms import form_login, form_newaccount, Uploader
 from sitePy.models import Usuarios, Foto
 from flask_login import login_required, login_user, logout_user, current_user
 import os
 from werkzeug.utils import secure_filename
 
-# esse codigo permite que todas as rotas do site estejam definidas em um só lugar
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def home():
-    return render_template('home.html')
-    # render template essencialmente carrega um html
-    # redirect funciona igual, auto-explicativo
-
-@app.route("/login_page", methods=["GET", "POST"])
-def login_page():
     login = form_login() # funcao declarada no forms, formulario
+    register = form_newaccount()
+
     if login.validate_on_submit(): # flask wtf form metodo
         usuario = Usuarios.query.filter_by(username=login.username.data).first() # pesquisa o usuario na database
         # checa se o usuario existe no banco + criptografa e checa contra as outras senhas criptografadas
-        if usuario and bcrypt.check_password_hash(usuario.passw, login.passw.data): # caso tudo certo
+        if not usuario:
+            flash("Usuário inexistente")
+        elif not bcrypt.check_password_hash(usuario.passw, login.passw.data): # caso tudo certo
+            flash("Senha incorreta")
+        else:
             login_user(usuario) # log in
             return redirect(url_for("user_page", userid=usuario.id))
             # user_page é a página pós login
 
-
-    return render_template("login_page.html", form=login)
+    return render_template("home.html", login_form=login, register_form = register)
     # caso falso ele retorna a login_page novamente
 
 @app.route("/newaccount", methods=["GET", "POST"])
@@ -33,9 +31,12 @@ def newaccount():
     new = form_newaccount() # outro form
     if new.validate_on_submit():
 
-
         senha = bcrypt.generate_password_hash(new.passw.data) # cria um hash novo pra senha, irreversivel
-        usuario = Usuarios(username=new.username.data, passw=senha)
+        if not Usuarios.query.filter_by(username=new.username.data).first():
+            usuario = Usuarios(username=new.username.data, passw=senha)
+        else:
+            flash("usuario existente")
+            return redirect(url_for('home'))
 
         database.session.add(usuario)
         database.session.commit()
@@ -48,7 +49,7 @@ def newaccount():
         return redirect(url_for("user_page", userid=usuario.id))
     else: print(new.errors)
 
-    return render_template("newaccount.html", form=new)
+    return render_template("home.html", register_form=new)
 
 @app.route("/user_page/<userid>", methods=["GET", "POST"])
 @login_required

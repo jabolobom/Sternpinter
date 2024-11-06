@@ -2,20 +2,80 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>funcionando</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <title>LOGIN</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_page.css') }}">
 
 </head>
 <body>
 
-    <h1 class="title">MUITAS FOTOS.</h1>
-
-<div class="box">
-    <h2>Bem-vindo ao </h2>
-    <button onclick="window.location.href='{{ url_for('login_page') }}'">Login</button>
-    <br>
-    <button onclick="window.location.href='{{ url_for('newaccount') }}'">Criar Conta</button>
+<div class="container" id="container">
+	<div class="form-container sign-up-container">
+		<form method="POST" action="{{ url_for('newaccount') }}">
+			<h1>Criar nova conta</h1>
+                {{ register_form.csrf_token }}
+            <div class="input-field">
+                {{ register_form.username.label() }}
+                {{ register_form.username(class="input") }}
+            </div>
+            <div class="input-field">
+                {{ register_form.passw.label() }}
+                {{ register_form.passw(class="input") }}
+            </div>
+            <div class="input-field">
+                {{ register_form.confirmation_passw.label() }}
+                {{ register_form.confirmation_passw(class="input") }}
+            </div>
+            <div class="input-field">
+                {{ register_form.confirmButton(class="btn") }}
+            </div>
+		</form>
+	</div>
+	<div class="form-container login-container">
+        <form method="POST" action="{{ url_for('home') }}" >
+			<h1>Login</h1>
+                {{ login_form.csrf_token }}
+            <div class="input-field">
+                {{ login_form.username.label() }}
+                {{ login_form.username(class="input") }}
+            </div>
+            <div class="input-field">
+                {{ login_form.passw.label() }}
+                {{ login_form.passw(class="input") }}
+            </div>
+            <div class="input-field">
+                {{ login_form.confirmButton(class="btn") }}
+            </div>
+		</form>
+	</div>
+	<div class="overlay-container">
+		<div class="overlay">
+			<div class="overlay-panel overlay-left">
+                <h1>Boas-vindas!</h1>
+				<p>Crie uma conta para acessar o site!</p>
+				<button class="ghost" id="logIn">Login</button>
+			</div>
+			<div class="overlay-panel overlay-right">
+				<h1>Bem vindo de volta!</h1>
+				<p>Insira seus dados para continuar no site!</p>
+				<button class="ghost" id="cadastrar">Cadastrar</button>
+			</div>
+		</div>
+	</div>
 </div>
 
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul>
+      {% for category, message in messages %}
+        <p class="alerta">{{ message }}</p>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+<!--HOLY DIV ER -->
+<script src="{{ url_for('static', filename='js/login_slider.js') }}"></script>
 </body>
+
 </html>
