@@ -3,8 +3,9 @@ from flask import render_template, url_for, redirect, jsonify, request, abort, f
 from sitePy.forms import form_login, form_newaccount, Uploader
 from sitePy.models import Usuarios, Foto
 from flask_login import login_required, login_user, logout_user, current_user
-import os
+import os, uuid
 from werkzeug.utils import secure_filename
+from datetime import datetime, timezone, timedelta
 
 @app.route("/", methods=["GET", "POST"])
 def home():
@@ -35,7 +36,7 @@ def newaccount():
         if not Usuarios.query.filter_by(username=new.username.data).first():
             usuario = Usuarios(username=new.username.data, passw=senha)
         else:
-            flash("usuario existente")
+            flash("Usuario já existe")
             return redirect(url_for('home'))
 
         database.session.add(usuario)
@@ -51,29 +52,57 @@ def newaccount():
 
     return render_template("home.html", register_form=new)
 
+
 @app.route("/user_page/<userid>", methods=["GET", "POST"])
 @login_required
-def user_page(userid): # pagina do usuario
+def user_page(userid):
     if int(userid) == int(current_user.id):
         manda = Uploader()
         if manda.validate_on_submit():
-            arcaivo = manda.imagem.data
-            safename = secure_filename(arcaivo.filename)
+            try:
+                # Debug prints
+                print("Current directory:", os.path.abspath(os.path.dirname(__file__)))
+                print("Upload folder config:", app.config["UPLOAD_FOLDER"])
 
-            pathtoimg = os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config["UPLOAD_FOLDER"],safename)
-            arcaivo.save(pathtoimg)
+                arcaivo = manda.imagem.data
+                safename = secure_filename(arcaivo.filename)
+                unique_filename = get_unique_filename(safename)
 
-            imagem = Foto(img=safename, ownerID=current_user.id)
+                # Print the full path
+                pathtoimg = os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                                         app.config["UPLOAD_FOLDER"],
+                                         unique_filename)
+                print("Trying to save to:", pathtoimg)
 
-            database.session.add(imagem)
-            database.session.commit()
-            return redirect(url_for("user_page", userid=userid)) # redireciona novamente a pagina do user
+                # Create directory if it doesn't exist
+                upload_dir = os.path.dirname(pathtoimg)
+                os.makedirs(upload_dir, exist_ok=True)
+
+                # Try to save and print result
+                arcaivo.save(pathtoimg)
+                print(f"File saved as: {unique_filename}")
+
+                # Verify file exists
+                if os.path.exists(pathtoimg):
+                    print("File was saved successfully at:", pathtoimg)
+                else:
+                    print("File failed to save at:", pathtoimg)
+
+                imagem = Foto(img=unique_filename, ownerID=current_user.id)
+                database.session.add(imagem)
+                database.session.commit()
+
+                return redirect(url_for("user_page", userid=userid))
+
+            except Exception as e:
+                print(f"Error durante upload: {str(e)}")
+                database.session.rollback()
+                flash(f"Erro ao fazer upload: {str(e)}", "error")
 
         return render_template("user_page.html", nome=current_user, form=manda)
     else:
         nome = Usuarios.query.get(int(userid))
     return render_template("user_page.html", nome=nome, form=None)
-
 @app.route("/logout")
 @login_required
 def logout():
@@ -124,3 +153,11 @@ def update_counter():
     database.session.commit() # salva as diferenças na DB
     return jsonify({"success": True, "likeCount": foto.likeCounter, "dislikeCount": foto.dislikeCounter}), 200
     # resposta ao script para que ele não quebre no meio e entre em combustão.
+
+def get_unique_filename(original_name):
+    # pega a extensão do arquivo
+    _, ext = os.path.splitext(original_name)
+    # cria nome unico com uuid e timestamp
+    unique_filename = f"{datetime.now(timezone(timedelta(hours=-3))).strftime('%Y%m%d_%H%M%S')}_{str(uuid.uuid4())[:8]}{ext}"
+    # y/d/h/m/s + 8 digit uuid
+    return secure_filename(unique_filename)

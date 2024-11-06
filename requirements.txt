@@ -7,3 +7,4 @@ SQLAlchemy==2.0.23
 WTForms==3.1.1
 mysql-connector==2.2.9
 werkzeug==3.0.4
+uuid==1.30
