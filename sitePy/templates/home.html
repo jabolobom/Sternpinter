@@ -9,61 +9,62 @@
 </head>
 <body>
 
-<div class="container" id="container">
-	<div class="form-container sign-up-container">
-		<form method="POST" action="{{ url_for('newaccount') }}">
-			<h1>Criar nova conta</h1>
-                {{ register_form.csrf_token }}
-            <div class="input-field">
-                {{ register_form.username.label() }}
-                {{ register_form.username(class="input") }}
+<div class="container-wrapper">
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form method="POST" action="{{ url_for('newaccount') }}">
+                <h1>Criar nova conta</h1>
+                    {{ register_form.csrf_token }}
+                <div class="input-field">
+                    {{ register_form.username.label() }}
+                    {{ register_form.username(class="input") }}
+                </div>
+                <div class="input-field">
+                    {{ register_form.passw.label() }}
+                    {{ register_form.passw(class="input") }}
+                </div>
+                <div class="input-field">
+                    {{ register_form.confirmation_passw.label() }}
+                    {{ register_form.confirmation_passw(class="input") }}
+                </div>
+                    <div class="input-field">
+                        {{ register_form.confirmButton(class="btn") }}
+                    </div>
+            </form>
+        </div>
+        <div class="form-container login-container">
+            <form method="POST" action="{{ url_for('home') }}" >
+                <h1>Login</h1>
+                    {{ login_form.csrf_token }}
+                <div class="input-field">
+                    {{ login_form.username.label() }}
+                    {{ login_form.username(class="input") }}
+                </div>
+                <div class="input-field">
+                    {{ login_form.passw.label() }}
+                    {{ login_form.passw(class="input") }}
+                </div>
+                <div class="input-field">
+                    {{ login_form.confirmButton(class="btn") }}
+                </div>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Boas-vindas!</h1>
+                    <p>Crie uma conta para acessar o site!</p>
+                    <button class="ghost" id="logIn">Login</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Bem vindo de volta!</h1>
+                    <p>Insira seus dados para continuar no site!</p>
+                    <button class="ghost" id="cadastrar">Cadastrar</button>
+                </div>
             </div>
-            <div class="input-field">
-                {{ register_form.passw.label() }}
-                {{ register_form.passw(class="input") }}
-            </div>
-            <div class="input-field">
-                {{ register_form.confirmation_passw.label() }}
-                {{ register_form.confirmation_passw(class="input") }}
-            </div>
-            <div class="input-field">
-                {{ register_form.confirmButton(class="btn") }}
-            </div>
-		</form>
-	</div>
-	<div class="form-container login-container">
-        <form method="POST" action="{{ url_for('home') }}" >
-			<h1>Login</h1>
-                {{ login_form.csrf_token }}
-            <div class="input-field">
-                {{ login_form.username.label() }}
-                {{ login_form.username(class="input") }}
-            </div>
-            <div class="input-field">
-                {{ login_form.passw.label() }}
-                {{ login_form.passw(class="input") }}
-            </div>
-            <div class="input-field">
-                {{ login_form.confirmButton(class="btn") }}
-            </div>
-		</form>
-	</div>
-	<div class="overlay-container">
-		<div class="overlay">
-			<div class="overlay-panel overlay-left">
-                <h1>Boas-vindas!</h1>
-				<p>Crie uma conta para acessar o site!</p>
-				<button class="ghost" id="logIn">Login</button>
-			</div>
-			<div class="overlay-panel overlay-right">
-				<h1>Bem vindo de volta!</h1>
-				<p>Insira seus dados para continuar no site!</p>
-				<button class="ghost" id="cadastrar">Cadastrar</button>
-			</div>
-		</div>
-	</div>
+        </div>
+    </div>
 </div>
-
 
 {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}

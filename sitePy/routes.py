@@ -52,7 +52,6 @@ def newaccount():
 
     return render_template("home.html", register_form=new)
 
-
 @app.route("/user_page/<userid>", methods=["GET", "POST"])
 @login_required
 def user_page(userid):

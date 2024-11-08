@@ -6,9 +6,8 @@
     <title>mural dos usuarios</title>
 </head>
 <body>
-
-    <h1>IIMAGENS ALL:</h1>
-
+<div class="image-gallery-wrapper">
+    <h1>Todos os posts</h1>
     <div class="image-gallery">
         {% for foto in fotos %}
           <img src ="{{ url_for('static', filename='posters/{}'.format(foto.img)) }}"
@@ -17,6 +16,7 @@
           />
     {% endfor %}
     </div>
+</div>
 
     <a href=" {{ url_for('logout') }}"> <p>sair?</p> </a>
     <script src="{{ url_for('static', filename='js/feed_all.js') }}"></script>
