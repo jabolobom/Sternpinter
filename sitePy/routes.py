@@ -27,6 +27,10 @@ def home():
     return render_template("home.html", login_form=login, register_form = register)
     # caso falso ele retorna a login_page novamente
 
+@app.route("/landingpage", methods=["GET", "POST"])
+def landingpage():
+    return render_template("landingpage.html")
+
 @app.route("/newaccount", methods=["GET", "POST"])
 def newaccount():
     new = form_newaccount() # outro form
