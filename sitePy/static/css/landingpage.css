@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Mega:wght@100..900&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: #FFCC00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
+    height: 100vh;
+    margin: -20px 0 50px;
+    margin-top: 10px;
+}
+
+h1 {
+    font-weight: bold;
+    margin: 20px 5px;
+    font-family: 'Lexend Mega', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+h2 {
+    text-align: center;
+    font-size: 50px;
+}
+
+p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.5px;
+    margin: 20px 0 30px;
+}
+
+span {
+    font-size: 12px;
+}
+
+a {
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    margin: 15px 0;
+}
+
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border: 3px solid black;
+    height: 100%;
+    width: 80%;
+    box-shadow: 10px 10px 0px 0px rgba(0,0,0,1);
+}
+
+.wrapper > *{
+    padding: 25px;
+    text-align: center;
+    display: flex; /* fazendo aqui se aplica a todos elementos children*/
+}
+
+.title{
+    background: #FFFFFF;
+    flex-grow: 0;
+    height: 10%;
+    justify-content: center;
+    align-items: center;
+}
+
+.maintext{
+    background: #FF4D00;
+    outline: solid black;
+    margin: 10px;
+    align-self: flex-start;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    width: auto;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.mediabox{
+    display: flex;
+    background-color: #FFFFFF;
+    border-radius: 100%;
+    margin-left: 25px;
+    align-items: flex-end;
+}
+
+.bigbutton{
+    display: flex;
+    margin: auto;
+    margin-bottom: 15px;
+    width: 100%;
+    height: 64px;
+    align-items: center;
+    justify-content: center;
+}
+
+.butone{
+    border: 3px solid #000000;
+    background-color: #0033ff;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: "Montserrat", sans-serif;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+    display: block;
+    width: 256px;
+}
+
+.butone:active {
+    transform: scale(0.90);
+}
+
+.cardleft{
+    display: flex;
+    background-color: #FFFFFF;
+   flex-direction: row;
+   flex-grow: 1;
+   height: 44px;
+}
+
+@media (max-width: 768px) {
+.wrapper {
+    height: auto;
+    width: 100%;
+}
+.maintext {
+    width: 100%;
+    margin: 10px 0;
+}
+
+ .mediabox {
+    margin-left: 0;
+}
+}
