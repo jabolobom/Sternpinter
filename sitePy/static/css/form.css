@@ -45,7 +45,6 @@ a {
 }
 
 .btn, button{
-	border-radius: 20px;
 	border: 2px solid #000000;
 	background-color: #0033ff;
 	color: #FFFFFF;
@@ -55,23 +54,35 @@ a {
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	transition: transform 80ms ease-in;
+	box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+}
+
+button{
+	/*box-shadow: 3px 3px 0px 0px rgba(255,255,255,1) !important;*/
+	background-color: #FFFFFF;
+	color: #000000;
 }
 
 .btn:active {
 	transform: scale(0.85);
 }
 
-.btn:focus {
-	outline: none;
+.btn:hover {
+	background-color: #0055ff;
 }
 
 button.ghost {
-	background-color: transparent;
+	background-color: #FFFFFF;
 	border-color: #FFFFFF;
 }
 
+button:active{
+	transform: scale(0.85);
+}
+
 button:hover{
-	background: #0600ab;
+	background: #bababa;
+	border-color: #bababa;
 }
 
 form {
@@ -95,7 +106,6 @@ input {
 
 .container {
     background-color: #fff;
-    border-radius: 10px;
 	border: 3px solid #000000;
     position: relative;
     overflow: hidden;

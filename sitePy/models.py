@@ -12,6 +12,7 @@ class Usuarios(database.Model, UserMixin):
     id = database.Column(database.Integer, primary_key=True) # uso interno, associação com imagens
     username = database.Column(database.String(255), nullable=False, unique=True) # login
     passw = database.Column(database.String(255), nullable=False) # login, vai ser escrita em um hash irreversivel
+    joinDate = database.Column(database.String(255), nullable=False)
     fotos = database.relationship('Foto', backref='Usuarios', lazy=True)
 
 class Foto(database.Model):

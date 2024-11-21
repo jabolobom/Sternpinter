@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+
+</head>
+<body>
+
+<div class="leftbar"> 
+        
+        <div class="profilebox">
+            <img class="profile_picture">
+            <span class="profile_data">{{ nome.username }}<br>Entrou em {{ nome.joinDate }}</span>
+        </div>
+        
+        <nav class="buttons">
+            <label class="nav_button" onclick="window.location.href='{{ url_for('feed_all') }}'">Ver todos posts</label>
+            <label class="nav_button" onclick="window.location.href='{{ url_for('feed') }}'">Swiper</label>
+            <label class="nav_button">Editar perfil</label>
+        </nav>
+        
+        <a class="logout" href=" {{ url_for('logout') }}">Sair?</a>
+</div>
+    
+<div class="container">
+    <div class="spacer">
+            {% if form %}
+    <form method = "POST" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+            {{ form.imagem(class="hidden-file-input", id="fileUpload", onchange="this.form.submit()") }}
+            <label class="nav_button" id="uploadbutton" for="fileUpload">Upload</label>
+    </form>
+    {% endif %}
+    </div>
+
+    <div class="image-gallery">
+        <ul>
+            {% for foto in nome.fotos %}
+            <li>
+                <img src ="{{ url_for('static', filename='posters/{}'.format(foto.img)) }}"
+                     width="360"
+                  height="360"
+                />
+            </li>
+            {% endfor %}
+        <li></li>
+        </ul>
+    </div>
+</div>
+
+
+
+</body>
+</html>

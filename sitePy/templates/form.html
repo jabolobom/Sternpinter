@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>LOGIN</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
 
 </head>
 <body>
@@ -22,7 +22,7 @@
                 <div class="input-field">
                     {{ register_form.passw.label() }}
                     {{ register_form.passw(class="input") }}
-                </div>
+                   </div>
                 <div class="input-field">
                     {{ register_form.confirmation_passw.label() }}
                     {{ register_form.confirmation_passw(class="input") }}
@@ -33,7 +33,7 @@
             </form>
         </div>
         <div class="form-container login-container">
-            <form method="POST" action="{{ url_for('home') }}" >
+            <form method="POST" action="{{ url_for('form') }}" >
                 <h1>Login</h1>
                     {{ login_form.csrf_token }}
                 <div class="input-field">

@@ -7,8 +7,12 @@ import os, uuid
 from werkzeug.utils import secure_filename
 from datetime import datetime, timezone, timedelta
 
-@app.route("/", methods=["GET", "POST"])
-def home():
+@app.route("/", methods=["GET","POST"])
+def landingpage():
+    return render_template("landingpage.html")
+
+@app.route("/form", methods=["GET", "POST"])
+def form():
     login = form_login() # funcao declarada no forms, formulario
     register = form_newaccount()
 
@@ -21,15 +25,11 @@ def home():
             flash("Senha incorreta")
         else:
             login_user(usuario) # log in
-            return redirect(url_for("user_page", userid=usuario.id))
-            # user_page é a página pós login
+            return redirect(url_for("profile", userid=usuario.id))
+            # profile é a página pós login
 
-    return render_template("home.html", login_form=login, register_form = register)
+    return render_template("form.html", login_form=login, register_form = register)
     # caso falso ele retorna a login_page novamente
-
-@app.route("/landingpage", methods=["GET", "POST"])
-def landingpage():
-    return render_template("landingpage.html")
 
 @app.route("/newaccount", methods=["GET", "POST"])
 def newaccount():
@@ -38,10 +38,11 @@ def newaccount():
 
         senha = bcrypt.generate_password_hash(new.passw.data) # cria um hash novo pra senha, irreversivel
         if not Usuarios.query.filter_by(username=new.username.data).first():
-            usuario = Usuarios(username=new.username.data, passw=senha)
+            dataatual = f"{datetime.now(timezone(timedelta(hours=-3))).strftime('%Y/%m/%d')}"
+            usuario = Usuarios(username=new.username.data, passw=senha, joinDate=dataatual)
         else:
             flash("Usuario já existe")
-            return redirect(url_for('home'))
+            return redirect(url_for('form'))
 
         database.session.add(usuario)
         database.session.commit()
@@ -51,14 +52,14 @@ def newaccount():
         # a database fosse invadida, as senhas nao seriam necessarias...
         # aparentemente "usuario" é o endereço do objeto em si, o que não fica salvo na db
 
-        return redirect(url_for("user_page", userid=usuario.id))
+        return redirect(url_for("profile", userid=usuario.id))
     else: print(new.errors)
 
-    return render_template("home.html", register_form=new)
+    return render_template("form.html", register_form=new)
 
-@app.route("/user_page/<userid>", methods=["GET", "POST"])
+@app.route("/profile/<userid>", methods=["GET", "POST"])
 @login_required
-def user_page(userid):
+def profile(userid):
     if int(userid) == int(current_user.id):
         manda = Uploader()
         if manda.validate_on_submit():
@@ -95,22 +96,23 @@ def user_page(userid):
                 database.session.add(imagem)
                 database.session.commit()
 
-                return redirect(url_for("user_page", userid=userid))
+                return redirect(url_for("profile", userid=userid))
 
             except Exception as e:
                 print(f"Error durante upload: {str(e)}")
                 database.session.rollback()
                 flash(f"Erro ao fazer upload: {str(e)}", "error")
 
-        return render_template("user_page.html", nome=current_user, form=manda)
+        return render_template("profile.html", nome=current_user, form=manda)
     else:
         nome = Usuarios.query.get(int(userid))
-    return render_template("user_page.html", nome=nome, form=None)
+    return render_template("profile.html", nome=nome, form=None)
+
 @app.route("/logout")
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('home'))
+    return redirect(url_for('landingpage'))
 
 @app.route("/feed")
 @login_required
