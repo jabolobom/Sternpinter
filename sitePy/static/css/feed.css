@@ -1,31 +1,45 @@
-html, body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
+body {
+    background: #FFCC00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    font-family: 'Montserrat', sans-serif;
+    height: 100vh;
+    margin-top: 10px;
 }
 
-h1{
-    text-align: center;
-    color: red;
+h1 {
+    font-weight: bold;
+    margin: 20px 5px;
+    font-family: 'Lexend Mega', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
 }
 
-#imageContainer-box {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-  background-color: rgb(245,247,250);
+#imageContainer-box{
+    display: flex;
+    flex-direction: column;
+    height: 1050px;
+    width: 760px;
+    margin-left: auto;
+    overflow: hidden;
+    background-color: #FFCC00;
+    align-content: center;
+    justify-content: center;
+    align-self: center;
 }
 
 .imageOutput {
-    width: 320px;
-    height: 320px;
+    width: 1024px;
+    height: 760px;
     position: absolute;
     top: 50%;
     left: 50%;
-    border-radius: 1%;
-    box-shadow: 0 4px 4px 0 rgba(0,0,0,0.1);
+    border: 3px solid #000000;
+    box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
     background-color: white;
     transform: translateX(-50%) translateY(-50%);
 }
@@ -33,9 +47,74 @@ h1{
 .nextbutton{
     width: 128px;
     position:absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    border-radius: 1%;
-    box-shadow: 0 4px 4px 0 rgba(0,0,0,0.1);
+    display: flex;
+    border: 2px solid #000000;
+    background-color: #0033FF;
+    color: white;
+    box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+    margin: 10px 0;
+    width: 256px;
 }
+
+.nextbutton:active {
+    transform: scale(0.85);
+}
+
+.nextbutton:hover {
+    background-color: #FFCC00;
+}
+
+
+.leftbar{
+    display: flex;
+    background-color: #FFFFFF;
+    flex-direction: column;
+    flex-grow: 0;
+    width: 312px;
+    height: 90vh;
+    align-self: flex-start;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: center;
+    margin-left: 10px;
+    margin-top: 25px;
+    box-shadow: 10px 10px 0px 0px rgba(0,0,0,1);
+    border: 2px solid #000000;
+    wrap-option: wrap;
+}
+
+    .buttons{
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: flex-end;
+    }
+
+    .nav_button{
+        display: flex;
+        border: 2px solid #000000;
+        background-color: #0033FF;
+        color: white;
+        box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
+        font-size: 12px;
+        font-weight: bold;
+        padding: 12px 45px;
+        text-transform: uppercase;
+        transition: transform 80ms ease-in;
+        margin: 10px 0;
+        width: 100px;
+        margin-left: 54px;
+    }
+
+    .nav_button:active {
+        transform: scale(0.85);
+    }
+
+    .nav_button:hover {
+        background-color: #FFCC00;
+    }

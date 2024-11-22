@@ -8,14 +8,21 @@
 </head>
 <body>
 
-    <h1>IMAGENS: </h1>
+<div container class="leftbar">
+    <span class="maintexto"><p>Tutorial: Clique e deslize com o mouse para deixar sua opinião sobre as imagens.</p></span>
+    Lembre-se: Para esquerda = Dislike
+    Para direita: like
+    Se divirta!!
+    <nav class="buttons">
+        <label class="nav_button" onclick="window.location.href='{{ url_for('feed_all') }}'">Ver todos</label>
+        <label class="nav_button" onclick="window.location.href='{{ url_for('logout') }}'">Sair?</label>
+    </nav>
+</div>
+
     <div id="imageContainer-box">
             <img class="imageOutput" id="first-imageOutput">
             <img class="imageOutput" id="second-imageOutput">
     </div>
-    <button onclick="add_one()"></button>
-
-    <a href=" {{ url_for('logout') }}"> <p>sair?</p> </a>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <script src="{{ url_for('static', filename='js/slider.js') }}"></script>
 </body>

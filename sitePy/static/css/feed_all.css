@@ -24,20 +24,22 @@ h1 {
     overflow: hidden;
     max-width: 95%;
     min-height: 480px;
+    height: auto;
     text-align: center;
+    margin-top: 40px;
 }
 
 .image-gallery {
-  margin: 20px auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  width: 100%;
-  max-width: 100%;
-  padding: 10px;
-  background-color: #ffffff;
+      margin: 20px auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      width: 100%;
+      max-width: 100%;
+      padding: 10px;
+      background-color: #ffffff;
 }
 
 .image-gallery img {
