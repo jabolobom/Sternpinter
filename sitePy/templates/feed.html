@@ -12,10 +12,11 @@
     <span class="maintexto"><p>Tutorial: Clique e deslize com o mouse para deixar sua opinião sobre as imagens.</p></span>
     Lembre-se: Para esquerda = Dislike
     Para direita: like
+    <br>
     Se divirta!!
     <nav class="buttons">
         <label class="nav_button" onclick="window.location.href='{{ url_for('feed_all') }}'">Ver todos</label>
-        <label class="nav_button" onclick="window.location.href='{{ url_for('logout') }}'">Sair?</label>
+        <label class="nav_button" onclick="history.back()">Voltar</label>
     </nav>
 </div>
 
