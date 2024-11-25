@@ -6,19 +6,15 @@
     <title>mural dos usuarios</title>
 </head>
 <body>
-<div class="image-gallery-wrapper">
-    <h1>Todos os posts</h1>
-    <div class="image-gallery">
-        {% for foto in fotos %}
-          <img src ="{{ url_for('static', filename='posters/{}'.format(foto.img)) }}"
-          width="360"
-          height="360"
-          />
-    {% endfor %}
+    <div class="titlebar"><h1>texto</h1></div>
+    <div class="imagegallery">
+        <ul>
+            {% for image in img_gallery %}
+            <li>
+                <img src ="{{ url_for('static', filename='posters/{}'.format(image.img)) }}" alt="imagem-galeria" id="imgfromgallery"/>
+            </li>
+            {% endfor %}
+        </ul>
     </div>
-</div>
-
-    <a href=" {{ url_for('logout') }}"> <p>sair?</p> </a>
-    <script src="{{ url_for('static', filename='js/feed_all.js') }}"></script>
 </body>
 </html>

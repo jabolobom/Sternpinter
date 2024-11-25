@@ -36,17 +36,13 @@
     {% endif %}
     </div>
 
-    <div class="image-gallery">
+    <div class="imagegallery">
         <ul>
-            {% for foto in nome.fotos %}
+            {% for image in nome.fotos %}
             <li>
-                <img src ="{{ url_for('static', filename='posters/{}'.format(foto.img)) }}"
-                     width="360"
-                  height="360"
-                />
+                <img src ="{{ url_for('static', filename='posters/{}'.format(image.img)) }}" alt="imagem-galeria" id="imgfromgallery"/>
             </li>
             {% endfor %}
-        <li></li>
         </ul>
     </div>
 </div>

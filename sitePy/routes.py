@@ -132,8 +132,8 @@ def get_fotos():
 @app.route("/feed_all")
 @login_required
 def feed_all():
-    fotos = Foto.query.order_by(Foto.crDate.desc()).all()
-    return render_template("feed_all.html", fotos=fotos)
+    img_gallery = Foto.query.order_by(Foto.crDate.desc()).all()
+    return render_template("feed_all.html", img_gallery=img_gallery)
 
 @app.route("/requests/update_counter", methods=['POST'])
 def update_counter():
