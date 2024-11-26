@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
+* {
+	box-sizing: border-box;
+}
+
+body{
+  display: flex;
+  flex-direction: column;
+  background-color: #FFCC00;
+  font-family: 'Montserrat', sans-serif;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+h1{
+  font-family: 'Montserrat', sans-serif;
+}
+
+h2 {
+	text-align: center;
+}
+
+p {
+	font-size: 14px;
+	font-weight: 100;
+	line-height: 20px;
+	letter-spacing: 0.5px;
+	margin: 20px 0 30px;
+}
+
+span {
+	font-size: 13px;
+	font-weight: 100;
+	line-height: 20px;
+	letter-spacing: 0.5px;
+	margin: 20px 0 30px;
+}
+
+a {
+	color: #333;
+	font-size: 18px;
+	text-decoration: none;
+	margin: 15px 0;
+}
+
+.form-box{
+  display: flex;
+  flex-direction: row;
+  background-color: white;
+  border: 3px solid #000;
+  height: auto;
+  width: 98vw;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 25px;
+  gap: 10px;
+  box-shadow: 6px 6px 0 0 rgba(0,0,0,1);
+}
+
+
+.wrapper-upload{
+  display: flex;
+  width: 100%;
+  gap: 10px;
+}
+
+.blankspace{
+  display: flex;
+  background-color: #ffd942;
+  flex-grow: 1;
+  outline: dashed;
+  height: 160px;
+  justify-content: center;
+}
+
+.blankspace:hover{
+  background-color: #ffc105;
+}
+
+.blankspace > h2{
+  color: black;
+  align-self: center;
+  text-align: center;
+}
+
+.nav_button{
+  display:flex;
+  height:80px;
+  width: 180px;
+  border: 2px solid #000000;
+  background-color: #0033FF;
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 1);
+  color: white;
+  margin-top: 40px;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+  user-select: none;
+}
+
+.nav_button:active {
+transform: scale(0.85);
+}
+
+.nav_button:hover {
+background-color: #FFCC00;
+}
+
+
+.wrapper-danger{
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 3px solid #000;
+  height: 176px;
+  width: 50vw;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+  box-shadow: 6px 6px 0 0 rgba(0,0,0,1);
+  margin-top: 25px;
+}
+
+.wrapper-danger > h2{
+  color: red;
+}
+
+#dangerbutton{
+  display:flex;
+  height: 40px;
+  width: 180px;
+  border: 2px solid #000000;
+  background-color: red;
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 1);
+  color: white;
+  margin-top: auto;
+  margin-bottom: 10px;
+  justify-self: center;
+  align-self: center;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+}
+
+#dangerbutton:active {
+  transform: scale(0.85);
+  }
+  
+#dangerbutton:hover {
+  background-color: darkred;
+}
+
+.wrapper-other{
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 3px solid #000;
+  height: 176px;
+  width: 50vw;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+  box-shadow: 6px 6px 0 0 rgba(0,0,0,1);
+  margin-top: 25px;
+}
+
+.wrapper-below {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px; 
+  width: 100%;
+}
+
+#voltarbutton{
+  justify-self: center;
+  align-self: center;
+  margin: 0;
+}

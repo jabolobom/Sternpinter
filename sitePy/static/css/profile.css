@@ -103,6 +103,7 @@ a {
 	padding: 12px 45px;
 	text-transform: uppercase;
 	transition: transform 80ms ease-in;
+    user-select: none;
 }
 
 .nav_button:active {

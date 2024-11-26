@@ -108,6 +108,11 @@ def profile(userid):
         nome = Usuarios.query.get(int(userid))
     return render_template("profile.html", nome=nome, form=None)
 
+@app.route("/edit_profile", methods=["GET", "POST"])
+@login_required
+def edit_profile():
+    return render_template("edit_profile.html")
+
 @app.route("/logout")
 @login_required
 def logout():

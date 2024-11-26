@@ -19,7 +19,7 @@
         <nav class="buttons">
             <label class="nav_button" onclick="window.location.href='{{ url_for('feed_all') }}'">Ver todos posts</label>
             <label class="nav_button" onclick="window.location.href='{{ url_for('feed') }}'">Swiper</label>
-            <label class="nav_button">Editar perfil</label>
+            <label class="nav_button" onclick="window.location.href='{{ url_for('edit_profile') }}'">Editar perfil</label>
         </nav>
         
         <a class="logout" href=" {{ url_for('logout') }}">Sair?</a>

@@ -44,6 +44,7 @@ h1{
 	font-weight: bold;
 	text-transform: uppercase;
 	transition: transform 80ms ease-in;
+    user-select: none;
 }
 
 .nav_button:active {
