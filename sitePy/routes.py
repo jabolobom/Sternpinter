@@ -1,7 +1,7 @@
 from sitePy import app, database, bcrypt # ver como bcrypt funciona
 from flask import render_template, url_for, redirect, jsonify, request, abort, flash
 from sitePy.forms import form_login, form_newaccount, Uploader
-from sitePy.models import Usuarios, Foto
+from sitePy.models import Usuarios, Foto, InteracaoUser
 from flask_login import login_required, login_user, logout_user, current_user
 import os, uuid
 from werkzeug.utils import secure_filename
@@ -127,6 +127,8 @@ def feed():
 
 @app.route("/requests/foto", methods=['GET'])
 def get_fotos():
+    # TODO CRIAR METODO DE CHECAGM=EM NO REQUEST PRO SWIPER
+
     fotos = Foto.query.order_by(Foto.crDate.desc()).all()
     foto_list = [{"id": img.id,
                   "img": url_for('static', filename=f'posters/{img.img}'),
@@ -154,11 +156,16 @@ def update_counter():
     if not foto: # caso erro
         return jsonify({"error": "foto não encontrada"}), 404
 
-    if action == "like":
-        foto.likeCounter += 1
-    elif action == "dislike":
-        foto.dislikeCounter += 1
-    # define qual usar, poderia ser um MATCH case, mas não é necessário
+    if not InteracaoUser.query.filter_by(
+        user_id = current_user.id,
+        image_id = foto.id
+    ).first():
+        if action == "like":
+            foto.likeCounter += 1
+            InteracaoUser(user_id=current_user.id, image_id=foto.id)
+        elif action == "dislike":
+            foto.dislikeCounter += 1
+            InteracaoUser(user_id=current_user.id, image_id=foto.id)
 
     database.session.commit() # salva as diferenças na DB
     return jsonify({"success": True, "likeCount": foto.likeCounter, "dislikeCount": foto.dislikeCounter}), 200
