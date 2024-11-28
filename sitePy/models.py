@@ -13,7 +13,8 @@ class Usuarios(database.Model, UserMixin):
     username = database.Column(database.String(255), nullable=False, unique=True) # login
     passw = database.Column(database.String(255), nullable=False) # login, vai ser escrita em um hash irreversivel
     joinDate = database.Column(database.String(255), nullable=False)
-    fotos = database.relationship('Foto', backref='Usuarios', lazy=True)
+    fotos = database.relationship('Foto', backref='usuarios', lazy=True)
+    interacao = database.relationship("InteracaoUser", backref='usuarios', lazy=True)
 
 class Foto(database.Model):
     id = database.Column(database.Integer, primary_key = True) # uso interno
@@ -25,3 +26,8 @@ class Foto(database.Model):
     # owner id recebe uma foreign key, é mais uma solução de base de dados do que uma solução orientada a objetos
     # (apesar de ser um atributo), essa foreign key é um valor de uma outra base de dados. Essencialmente é o que
     # conecta uma a outra.
+    interacao = database.relationship("InteracaoUser", backref='Foto', lazy=True)
+
+class InteracaoUser(database.Model):
+    user_id = database.Column(database.Integer, database.ForeignKey('usuarios.id'), nullable=False)
+    image_id = database.Column(database.Integer, database.ForeignKey('Foto.id'), nullable=False)
