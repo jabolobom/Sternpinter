@@ -47,6 +47,10 @@ h1 {
     flex-shrink: 0;
 }
 
+.imageOutput.visible{
+    opacity: 1;
+}
+
 .nextbutton{
     width: 128px;
     position:absolute;

@@ -7,11 +7,17 @@
   </head>
   <body>
     <div class="form-box">
-      <div class="wrapper-upload">
-        <div class="blankspace" onclick=""><h2>UPLOAD PROFILE PICTURE</h2></div>
-        <label class="nav_button">button</label>
-      </div>
 
+      <div class="wrapper-upload">
+        <div class="blankspace" onclick="document.getElementById('fileUpload').click();">
+            <h2>UPLOAD PROFILE PICTURE</h2>
+        </div>
+        <label class="nav_button" for="fileUpload">button</label>
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+            {{ form.imagem(class="hidden-file-input", id="fileUpload", onchange="this.form.submit()") }}
+        </form>
+      </div>
 
     </div>
     <div class="wrapper-below">
@@ -21,7 +27,7 @@
       </div>
 
       <div class="wrapper-other">
-        <label class="nav_button" id="voltarbutton" onclick="history.back()">Voltar</label>
+        <label class="nav_button" id="voltarbutton" onclick="window.location.href='{{ url_for('profile', userid=current_user.id) }}'">Voltar</label>
       </div>
     </div>
 

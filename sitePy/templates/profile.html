@@ -9,10 +9,9 @@
 </head>
 <body>
 
-<div class="leftbar"> 
-        
+<div class="leftbar">
         <div class="profilebox">
-            <img class="profile_picture">
+            <img class="profile_picture" src="{{ url_for('static', filename='posters/' + nome.profile_image) }}">
             <span class="profile_data">{{ nome.username }}<br>Entrou em {{ nome.joinDate }}</span>
         </div>
         

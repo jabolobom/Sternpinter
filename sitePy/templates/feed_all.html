@@ -8,7 +8,7 @@
 <body>
     <div class="titlebar"><h1>texto</h1></div>
         <div class="actions">
-        <label class="nav_button" onclick="history.back();">Voltar</label>
+        <label class="nav_button" id="voltarbutton" onclick="window.location.href='{{ url_for('profile', userid=current_user.id) }}'">Voltar</label>
         <label class="nav_button" onclick="window.location.href='{{ url_for('logout') }}'">Sair?</label>
     </div>
     <div class="imagegallery">

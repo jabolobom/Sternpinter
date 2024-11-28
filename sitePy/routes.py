@@ -3,7 +3,7 @@ from flask import render_template, url_for, redirect, jsonify, request, abort, f
 from sitePy.forms import form_login, form_newaccount, Uploader
 from sitePy.models import Usuarios, Foto, InteracaoUser
 from flask_login import login_required, login_user, logout_user, current_user
-import os, uuid
+import os, uuid, random
 from werkzeug.utils import secure_filename
 from datetime import datetime, timezone, timedelta
 
@@ -60,58 +60,19 @@ def newaccount():
 @app.route("/profile/<userid>", methods=["GET", "POST"])
 @login_required
 def profile(userid):
-    if int(userid) == int(current_user.id):
-        manda = Uploader()
-        if manda.validate_on_submit():
-            try:
-                # Debug prints
-                print("Current directory:", os.path.abspath(os.path.dirname(__file__)))
-                print("Upload folder config:", app.config["UPLOAD_FOLDER"])
+    manda = Uploader()
+    if manda.validate_on_submit():
+            image_uploader("feed-image")
 
-                arcaivo = manda.imagem.data
-                safename = secure_filename(arcaivo.filename)
-                unique_filename = get_unique_filename(safename)
-
-                # Print the full path
-                pathtoimg = os.path.join(os.path.abspath(os.path.dirname(__file__)),
-                                         app.config["UPLOAD_FOLDER"],
-                                         unique_filename)
-                print("Trying to save to:", pathtoimg)
-
-                # Create directory if it doesn't exist
-                upload_dir = os.path.dirname(pathtoimg)
-                os.makedirs(upload_dir, exist_ok=True)
-
-                # Try to save and print result
-                arcaivo.save(pathtoimg)
-                print(f"File saved as: {unique_filename}")
-
-                # Verify file exists
-                if os.path.exists(pathtoimg):
-                    print("File was saved successfully at:", pathtoimg)
-                else:
-                    print("File failed to save at:", pathtoimg)
-
-                imagem = Foto(img=unique_filename, ownerID=current_user.id)
-                database.session.add(imagem)
-                database.session.commit()
-
-                return redirect(url_for("profile", userid=userid))
-
-            except Exception as e:
-                print(f"Error durante upload: {str(e)}")
-                database.session.rollback()
-                flash(f"Erro ao fazer upload: {str(e)}", "error")
-
-        return render_template("profile.html", nome=current_user, form=manda)
-    else:
-        nome = Usuarios.query.get(int(userid))
-    return render_template("profile.html", nome=nome, form=None)
+    return render_template("profile.html", nome=current_user, form=manda)
 
 @app.route("/edit_profile", methods=["GET", "POST"])
 @login_required
 def edit_profile():
-    return render_template("edit_profile.html")
+    manda = Uploader()
+    if manda.validate_on_submit():
+        image_uploader("profile-image")
+    return render_template("edit_profile.html", form=manda)
 
 @app.route("/logout")
 @login_required
@@ -127,9 +88,10 @@ def feed():
 
 @app.route("/requests/foto", methods=['GET'])
 def get_fotos():
-    # TODO CRIAR METODO DE CHECAGM=EM NO REQUEST PRO SWIPER
+    fotos_interagidas = [interacao.image_id for interacao in InteracaoUser.query.filter_by(user_id=current_user.id).all()]
 
-    fotos = Foto.query.order_by(Foto.crDate.desc()).all()
+    fotos = Foto.query.filter(Foto.id.notin_(fotos_interagidas)).order_by(Foto.crDate.desc()).all()
+
     foto_list = [{"id": img.id,
                   "img": url_for('static', filename=f'posters/{img.img}'),
                   "owner": img.ownerID,}
@@ -162,10 +124,12 @@ def update_counter():
     ).first():
         if action == "like":
             foto.likeCounter += 1
-            InteracaoUser(user_id=current_user.id, image_id=foto.id)
+            interacao = InteracaoUser(id=random.randint(1, 1000000000), user_id=current_user.id, image_id=foto.id)
+            database.session.add(interacao)
         elif action == "dislike":
             foto.dislikeCounter += 1
-            InteracaoUser(user_id=current_user.id, image_id=foto.id)
+            interacao = InteracaoUser(id=random.randint(1, 1000000000), user_id=current_user.id, image_id=foto.id)
+            database.session.add(interacao)
 
     database.session.commit() # salva as diferenças na DB
     return jsonify({"success": True, "likeCount": foto.likeCounter, "dislikeCount": foto.dislikeCounter}), 200
@@ -178,3 +142,89 @@ def get_unique_filename(original_name):
     unique_filename = f"{datetime.now(timezone(timedelta(hours=-3))).strftime('%Y%m%d_%H%M%S')}_{str(uuid.uuid4())[:8]}{ext}"
     # y/d/h/m/s + 8 digit uuid
     return secure_filename(unique_filename)
+
+def image_uploader(tipo):
+    manda = Uploader()
+    if tipo == "feed-image":
+        try:
+            # Debug prints
+            print("Current directory:", os.path.abspath(os.path.dirname(__file__)))
+            print("Upload folder config:", app.config["UPLOAD_FOLDER"])
+
+            arcaivo = manda.imagem.data
+            safename = secure_filename(arcaivo.filename)
+            unique_filename = get_unique_filename(safename)
+
+            # Print the full path
+            pathtoimg = os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                                     app.config["UPLOAD_FOLDER"],
+                                     unique_filename)
+            print("Trying to save to:", pathtoimg)
+
+            # Create directory if it doesn't exist
+            upload_dir = os.path.dirname(pathtoimg)
+            os.makedirs(upload_dir, exist_ok=True)
+
+            # Try to save and print result
+            arcaivo.save(pathtoimg)
+            print(f"File saved as: {unique_filename}")
+
+            # Verify file exists
+            if os.path.exists(pathtoimg):
+                print("File was saved successfully at:", pathtoimg)
+            else:
+                print("File failed to save at:", pathtoimg)
+
+            imagem = Foto(img=unique_filename, ownerID=current_user.id)
+            database.session.add(imagem)
+            database.session.commit()
+
+            return redirect(url_for("profile", userid=userid))
+
+        except Exception as e:
+            print(f"Error durante upload: {str(e)}")
+            database.session.rollback()
+            flash(f"Erro ao fazer upload: {str(e)}", "error")
+
+        return render_template("profile.html", nome=current_user, form=manda)
+
+    elif tipo == "profile-image":
+        try:
+            # Debug prints
+            print("Current directory:", os.path.abspath(os.path.dirname(__file__)))
+            print("Upload folder config:", app.config["UPLOAD_FOLDER"])
+
+            arcaivo = manda.imagem.data
+            safename = secure_filename(arcaivo.filename)
+            unique_filename = get_unique_filename(safename)
+
+            # Print the full path
+            pathtoimg = os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                                     app.config["UPLOAD_FOLDER"],
+                                     unique_filename)
+            print("Trying to save to:", pathtoimg)
+
+            # Create directory if it doesn't exist
+            upload_dir = os.path.dirname(pathtoimg)
+            os.makedirs(upload_dir, exist_ok=True)
+
+            # Try to save and print result
+            arcaivo.save(pathtoimg)
+            print(f"File saved as: {unique_filename}")
+
+            current_user.profile_image = unique_filename
+            database.session.commit()
+
+            # Verify file exists
+            if os.path.exists(pathtoimg):
+                print("File was saved successfully at:", pathtoimg)
+            else:
+                print("File failed to save at:", pathtoimg)
+
+            return redirect(url_for("edit_profile"))
+
+        except Exception as e:
+            print(f"Error durante upload: {str(e)}")
+            database.session.rollback()
+            flash(f"Erro ao fazer upload: {str(e)}", "error")
+

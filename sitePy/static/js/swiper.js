@@ -11,7 +11,13 @@ async function recebeFoto(){
         const respostaServer = await fetch("/requests/foto");
         fotos = await respostaServer.json();
         console.log(fotos)
-        proxImagem();
+        if (fotos.length === 0){
+            aviso()
+        }
+        else{
+            proxImagem();
+        }
+
     }
     catch (error){
         console.error("Erro no retorno de imagens: ", error) // DEBUG
@@ -29,9 +35,12 @@ function proxImagem(){
             console.log(`current index:", ${indexAtual}, "current image:", ${firstOutput.src}, "IMAGE ID: " ${fotos[indexAtual].id}`)
         }
     }
-    else{
-        showall_message()
-    }
+}
+
+function aviso(){
+    console.log("empty array")
+    alert("Você já interagiu com todas as imagens... Redirecionando...");
+    window.location.href= feedAll_url
 }
 
 class Swiper {
@@ -158,7 +167,8 @@ class Swiper {
             // seria chamado com um index além do que existe dentro da array fotos
         } else if (indexAtual >= fotos.length){ // sem mais imagens
             console.log("image array end");
-            create_button(this.container); // chama a função, usando o objeto como parametro
+            alert("Você já interagiu com todas as imagens... Redirecionando..."); // chama a função, usando o objeto como parametro
+            window.location.href= feedAll_url
         }
     }
 }

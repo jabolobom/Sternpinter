@@ -16,7 +16,7 @@
     Se divirta!!
     <nav class="buttons">
         <label class="nav_button" onclick="window.location.href='{{ url_for('feed_all') }}'">Ver todos</label>
-        <label class="nav_button" onclick="history.back()">Voltar</label>
+        <label class="nav_button" id="voltarbutton" onclick="window.location.href='{{ url_for('profile', userid=current_user.id) }}'">Voltar</label>
     </nav>
 </div>
 
