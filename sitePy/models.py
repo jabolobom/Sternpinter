@@ -13,8 +13,8 @@ class Usuarios(database.Model, UserMixin):
     username = database.Column(database.String(255), nullable=False, unique=True) # login
     passw = database.Column(database.String(255), nullable=False) # login, vai ser escrita em um hash irreversivel
     joinDate = database.Column(database.String(255), nullable=False)
-    fotos = database.relationship('Foto', backref='usuarios', lazy=True)
-    interacao = database.relationship("InteracaoUser", backref='usuarios', lazy=True)
+    fotos = database.relationship('Foto', backref='usuarios', lazy=True, cascade="all, delete-orphan")
+    interacao = database.relationship("InteracaoUser", backref='usuarios', lazy=True, cascade="all, delete-orphan")
     profile_image = database.Column(database.String(255), default="default-profile.jpg")
 
 class Foto(database.Model):
@@ -27,7 +27,7 @@ class Foto(database.Model):
     # owner id recebe uma foreign key, é mais uma solução de base de dados do que uma solução orientada a objetos
     # (apesar de ser um atributo), essa foreign key é um valor de uma outra base de dados. Essencialmente é o que
     # conecta uma a outra.
-    interacao = database.relationship("InteracaoUser", backref='foto', lazy=True)
+    interacao = database.relationship("InteracaoUser", backref='foto', lazy=True, cascade="all, delete-orphan")
 
 class InteracaoUser(database.Model):
     id = database.Column(database.Integer, primary_key=True) # toda classe precisa de uma primaria, apeasr de que não será usada

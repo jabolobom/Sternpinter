@@ -135,6 +135,43 @@ def update_counter():
     return jsonify({"success": True, "likeCount": foto.likeCounter, "dislikeCount": foto.dislikeCounter}), 200
     # resposta ao script para que ele não quebre no meio e entre em combustão.
 
+@app.route("/delete_account_call", methods=['POST'])
+def delete_account():
+    # copiado do meu commit no git:
+    # + função de delete na rota, apga o usuário e todos relacionamentos
+    # (imagens upadas + interações na db
+    # [entretanto os valores adicionados pelas interações continuam nas imagens que foram interagidas,
+    # não faria sentido remover essas também])
+    try:
+
+        for foto in current_user.fotos:
+            if os.path.exists(foto.img):
+                os.remove(foto.img)
+            database.session.delete(foto)
+            # deleta todas fotos upadas pelo usuário
+
+        if current_user.profile_image != "default-profile.jpg":
+            profile_image_path = os.path.join(
+                os.path.abspath(os.path.dirname(__file__)),
+                app.config["UPLOAD_FOLDER"],
+                current_user.profile_image
+            ) # deleta a ofot de perfil do usuário, um pouco mais complexo, considerando que a classe
+            # usuário salva apenas o nome da imagem, e a imagem em si não fica registrada na DB de fotos
+            # apesar de fisicamente estar no mesmo diretório.
+            if os.path.exists(profile_image_path):
+                os.remove(profile_image_path)  # exclui a imagem
+            current_user.profile_image = "default-profile.jpg" # volta a padrão pra nao dar erro na db
+            # e na classe
+
+
+        database.session.query(InteracaoUser).filter_by(user_id=current_user.id).delete()
+        Usuarios.query.filter_by(id=current_user.id).delete()
+        database.session.commit()
+
+        return jsonify({"Mensagem": "Conta deletada"}), 200
+    except Exception as e:
+        return jsonify({"ERRO": str(e)}), 500
+
 def get_unique_filename(original_name):
     # pega a extensão do arquivo
     _, ext = os.path.splitext(original_name)
@@ -227,4 +264,3 @@ def image_uploader(tipo):
             print(f"Error durante upload: {str(e)}")
             database.session.rollback()
             flash(f"Erro ao fazer upload: {str(e)}", "error")
-

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_profile.css') }}">
+    <meta name="csrf_token" content="{{ csrf_token() }}">
   </head>
   <body>
     <div class="form-box">
@@ -12,7 +13,7 @@
         <div class="blankspace" onclick="document.getElementById('fileUpload').click();">
             <h2>UPLOAD PROFILE PICTURE</h2>
         </div>
-        <label class="nav_button" for="fileUpload">button</label>
+        <label class="nav_button" for="fileUpload">Upload</label>
         <form method="POST" enctype="multipart/form-data">
             {{ form.csrf_token }}
             {{ form.imagem(class="hidden-file-input", id="fileUpload", onchange="this.form.submit()") }}
@@ -31,6 +32,19 @@
       </div>
     </div>
 
-    <script></script>
+<!--    modal para confirmação do delete account -->
+    <div id="modalbox" class="modal">
+      <div class="modal-content">
+        <p>Tem certeza disso? Sua conta será excluída
+        <label><h2>APÓS A CONFIRMAÇÃO, É IMPOSSÍVEL DESFAZER.</h2></label></p>
+        <div class="button-wrapper">
+          <label class="nav_button" id="confirmar_delete">Tenho certeza, quero excluir minha conta</label>
+          <label class="nav_button" id="cancelar_delete">Cancelar, não quero excluir</label>
+        </div>
+
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/delete_account.js') }}"></script>
   </body>
 </html>
