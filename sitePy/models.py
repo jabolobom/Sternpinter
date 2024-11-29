@@ -13,8 +13,8 @@ class Usuarios(database.Model, UserMixin):
     username = database.Column(database.String(255), nullable=False, unique=True) # login
     passw = database.Column(database.String(255), nullable=False) # login, vai ser escrita em um hash irreversivel
     joinDate = database.Column(database.String(255), nullable=False)
-    fotos = database.relationship('Foto', backref='usuarios', lazy=True)
-    interacao = database.relationship("InteracaoUser", backref='usuarios', lazy=True)
+    fotos = database.relationship('Foto', backref='usuarios', lazy=True, cascade="all, delete-orphan")
+    interacao = database.relationship("InteracaoUser", backref='usuarios', lazy=True, cascade="all, delete-orphan")
     profile_image = database.Column(database.String(255), default="default-profile.jpg")
 
 class Foto(database.Model):

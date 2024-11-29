@@ -12,6 +12,7 @@ body{
   align-items: center;
   justify-content: center;
   height: 100vh;
+  user-select: none;
 }
 
 h1{
@@ -155,7 +156,7 @@ background-color: #FFCC00;
 #dangerbutton:active {
   transform: scale(0.85);
   }
-  
+
 #dangerbutton:hover {
   background-color: darkred;
 }
@@ -177,7 +178,7 @@ background-color: #FFCC00;
 .wrapper-below {
   display: flex;
   justify-content: space-between;
-  gap: 10px; 
+  gap: 10px;
   width: 100%;
 }
 
@@ -185,4 +186,67 @@ background-color: #FFCC00;
   justify-self: center;
   align-self: center;
   margin: 0;
+}
+
+.modal{
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #FFFFFF;
+  border: 3px solid #000000;
+  padding: 20px;
+  box-shadow: 4px 4px 0 0 rgba(0,0,0,1);
+  z-index: 1000;
+}
+
+.modal-content{
+  justify-content: center;
+  text-align: center;
+}
+
+.modal-content > h2{
+  color: red;
+}
+
+.modal-content > p{
+  font-size: 16px;
+}
+
+.button-wrapper{
+  display: flex;
+  gap: 40px;
+  margin-top: 0;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+#confirmar_delete, #cancelar_delete{
+  text-align: center;
+}
+
+#confirmar_delete{
+  background-color: red;
+}
+
+#confirmar_delete:active {
+  transform: scale(0.85);
+  }
+
+#confirmar_delete:hover{
+  background-color: darkred;
+}
+
+#cancelar_delete{
+  background-color: #0033FF;
+}
+
+#cancelar_delete:active {
+  transform: scale(0.85);
+  }
+
+#cancelar_delete:hover{
+  background-color: #FFCC00;
 }
