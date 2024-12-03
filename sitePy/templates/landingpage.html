@@ -7,14 +7,14 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/landingpage.css') }}"></head>
 <body>
     
-
+<!--página bem querida, sem nada demais, praticamente tudo foi feito no CSS-->
    <div class="wrapper">
         <div class="title"><h1>Sterpinter</h1></div>
-        <div class="maintext"><h2>Texto de landing page extremamente chamativo! Wow such design choices</h2> <img class="mediabox" src="pattern2.bmp"></div>
-        <div class="bigbutton">
+        <div class="maintext"><h2>Texto de landing page extremamente chamativo! Wow such design choices</h2> <img class="mediabox" src="{{ url_for('static', filename='pattern2.bmp') }}"></div>
+        <div class="bigbutton"> <!-- textos obviamente placeholder -->
             <div class="cardleft"></div>
             <label class="nav_button" onclick="window.location.href='{{ url_for('form') }}'">ENTRAR</label>
-<!--            COLOCAR O LINK PRO LOGIN PAGE-->
+
         </div>
     </div>
 

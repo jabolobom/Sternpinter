@@ -3,7 +3,7 @@ from sitePy.models import Usuarios, Foto
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import SQLAlchemyError
 
-try:
+try: # script simples para criar as tabelas definidas em models.py
     with app.app_context():
         database.create_all()
         print("great sucess")

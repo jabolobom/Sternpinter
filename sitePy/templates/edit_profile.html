@@ -7,6 +7,7 @@
     <meta name="csrf_token" content="{{ csrf_token() }}">
   </head>
   <body>
+<!--  USANDO FLEXBOX PARA O LAYOUT EM PRATICAMENTE TODAS AS PÁGINAS-->
     <div class="form-box">
 
       <div class="wrapper-upload">
@@ -18,6 +19,8 @@
             {{ form.csrf_token }}
             {{ form.imagem(class="hidden-file-input", id="fileUpload", onchange="this.form.submit()") }}
         </form>
+<!--  sintaxe jinja2. necessário csrf token para que o upload seja válido na rota, medida de segurança
+impede que qualquer um só digite o link da rota de upload -->
       </div>
 
     </div>

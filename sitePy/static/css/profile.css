@@ -138,7 +138,7 @@ a {
 }
 
 .hidden-file-input {
-    display: none;
+    display: none; /* esconde o input e deixar só o botão label como input */
 }
 
 
@@ -176,12 +176,14 @@ li {
     flex-grow: 0;
 }
 
+/* evitar um comportamento estranho que vem com esse approach a galeria
+sem isso pode acontecer da ultima imagem crescer muito ou sobrar espaço*/
 li:last-child {
     flex-grow: 10;
 }
 
 #imgfromgallery {
-    max-width: 99%;;
+    max-width: 99%;  /* pra ficar bonitinho dentro do container pai */
     object-fit: cover;
     vertical-align: bottom;
     box-shadow: 1px 1px 0 0 rgba(0,0,0,1);

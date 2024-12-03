@@ -13,8 +13,8 @@
         <div class="profilebox">
             <img class="profile_picture" src="{{ url_for('static', filename='posters/' + nome.profile_image) }}">
             <span class="profile_data">{{ nome.username }}<br>Entrou em {{ nome.joinDate }}</span>
-        </div>
-        
+        </div> <!-- puxa os valores das variáveis que são enviadas junto na hora do render template -->
+
         <nav class="buttons">
             <label class="nav_button" onclick="window.location.href='{{ url_for('feed_all') }}'">Ver todos posts</label>
             <label class="nav_button" onclick="window.location.href='{{ url_for('feed') }}'">Swiper</label>
@@ -25,7 +25,7 @@
 </div>
     
 <div class="container">
-    <div class="spacer">
+    <div class="spacer"> <!-- não sabia usar margin quando fiz isso... -->
             {% if form %}
     <form method = "POST" enctype="multipart/form-data">
             {{ form.csrf_token }}
@@ -33,7 +33,7 @@
             <label class="nav_button" id="uploadbutton" for="fileUpload">Upload</label>
     </form>
     {% endif %}
-    </div>
+    </div> <!-- tudo usando sintaxe do flask -->
 
     <div class="imagegallery">
         <ul>
@@ -44,9 +44,8 @@
             {% endfor %}
         </ul>
     </div>
-</div>
-
-
+</div> <!-- galeria de imagens onde as imagens se adaptam ao próprio tamanho, essencialmente é uma lista
+ invisível e só vai adicionando conforme tem as imagens, bem bonitinho -->
 
 </body>
 </html>

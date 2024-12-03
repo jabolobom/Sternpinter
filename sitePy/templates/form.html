@@ -8,7 +8,7 @@
 
 </head>
 <body>
-
+<!-- DIV DIV DIV, SERÁ QUE TUDO É DIV NESSA BOMBA? (foreshadowing) -->
 <div class="container-wrapper">
     <div class="container" id="container">
         <div class="form-container sign-up-container">
@@ -18,7 +18,7 @@
                 <div class="input-field">
                     {{ register_form.username.label() }}
                     {{ register_form.username(class="input") }}
-                </div>
+                </div> <!-- formulário flask, feio, mas funciona -->
                 <div class="input-field">
                     {{ register_form.passw.label() }}
                     {{ register_form.passw(class="input") }}
@@ -26,7 +26,7 @@
                 <div class="input-field">
                     {{ register_form.confirmation_passw.label() }}
                     {{ register_form.confirmation_passw(class="input") }}
-                </div>
+                </div> <!--colocando uma classe nessas bombas pra ser mais fácil de editar o css-->
                     <div class="input-field">
                         {{ register_form.confirmButton(class="btn") }}
                     </div>
@@ -64,7 +64,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> <!--HOLY DIV ER -->
 
 {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
@@ -74,8 +74,8 @@
       {% endfor %}
     </ul>
   {% endif %}
-{% endwith %}
-<!--HOLY DIV ER -->
+{% endwith %} <!-- mostra os alertas do flash -->
+
 <script src="{{ url_for('static', filename='js/login_slider.js') }}"></script>
 </body>
 

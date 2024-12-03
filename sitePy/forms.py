@@ -4,7 +4,7 @@ from wtforms import StringField, PasswordField, SubmitField, FileField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from sitePy.models import Usuarios
 
-#formularios são controlados por classes
+# FORMULÁRIOS DO SITE. NA UTILIZAÇÃO DO FLASK, SÃO CLASSES HERDADAS DE FlaskForm
 class form_login(FlaskForm):
     username = StringField("Usuário", validators=[DataRequired()]) # hard coding os formularios no back-end
     passw = PasswordField("Senha", validators=[DataRequired()])
@@ -24,6 +24,6 @@ class form_newaccount(FlaskForm):
             return ValidationError("Existing user")
 
 
-class Uploader(FlaskForm):
+class Uploader(FlaskForm): # gerencia upload de arquivos
     imagem = FileField(label="nova imagem", validators=[DataRequired(), FileAllowed(['jpg', 'jpeg', 'png', 'gif'], "Apenas arquivos de imagem: jpg,jpeg,png e gif's permitidos.")])
     confirmButton = SubmitField("Upload")
