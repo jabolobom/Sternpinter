@@ -1,6 +1,6 @@
 <h1>Sternpinter</h1>
 
-<p>Inspirado no pinterest, uma galeria de fotos com sistema de likes, perfil e uploads individuais.</p>
+<p>Projeto da faculdade inspirado no pinterest, uma galeria de fotos com sistema de likes, perfil e uploads individuais.</p>
 <h3>Swiper</h3>
 <p>Uma pilha de imagens, usuários arrastam para a esquerda e para a direita, para anunciarem se gostaram ou não gostaram
 das imagens.</p>
